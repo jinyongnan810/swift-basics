@@ -1,3 +1,4 @@
+import Cocoa
 // variables
 print("---variables---")
 let notChangeable = 7
@@ -111,7 +112,7 @@ print(onlyT)
 // Structs
 print("---Structs---")
 struct Album {
-    var title: String 
+    var title: String
     let artist: String
     var isReleased: Bool = true
     func summary() {
@@ -131,13 +132,82 @@ struct Player {
     let id: Int
     let name: String
     // with initializer
-    init(name:String){
+    init(name: String) {
         self.name = name
         self.id = Int.random(in: 1...999)
     }
-    func info(){
+    func info() {
         print("id:\(id), name:\(name)")
     }
 }
 let player = Player(name: "kin")
 print(player.info())
+
+// classes
+print("---Classes---")
+class Employee {
+    let name: String
+    let workHours: Int
+    init(name: String, hours: Int) {
+        self.name = name
+        self.workHours = hours
+    }
+    func summary() {
+        print("\(self.name) works \(self.workHours) a day")
+    }
+}
+class Coder: Employee {
+    let language: String
+    init(name: String, hours: Int, language: String) {
+        self.language = language
+        super.init(name: name, hours: hours)
+    }
+    func code() {
+        print("\(self.name) codes \(self.language)")
+    }
+    override func summary() {
+        print("\(self.name) codes \(self.language) \(self.workHours) a day")
+    }
+    deinit {
+        print("\(self.name) has been destroyed")
+    }
+}
+let coder = Coder(name: "kin", hours: 6, language: "swift")
+coder.summary()
+// key feature compare to structs
+// 1. assigning to another variable doesn't copy the value, only assigns the ref
+// 2. don't need mutating keyword to make it changeable
+
+// extensions
+print("---extensions---")
+extension String {
+    func trimmed() -> String {
+        self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+    }
+    mutating func trim() {
+        self = self.trimmed()
+    }
+
+    var lines:[String] {
+        self.components(separatedBy: .newlines)
+    }
+}
+print(" abc de f g ".trimmed())
+var str = " bcd ef "
+str.trim()
+print(str)
+var multiLines = """
+hello
+goodbye
+"""
+print(multiLines.lines)
+
+// extension on Collection will work on Arrays, Dictionaries and Sets
+extension Collection {
+    var isNotEmpty: Bool {
+        isEmpty == false
+    }
+}
+let arr = ["a", "b"]
+let empty = [String]()
+print("arr is not empty: \(arr.isNotEmpty). empty is not empty: \(empty.isNotEmpty).")
