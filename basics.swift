@@ -188,7 +188,7 @@ extension String {
         self = self.trimmed()
     }
 
-    var lines:[String] {
+    var lines: [String] {
         self.components(separatedBy: .newlines)
     }
 }
@@ -211,3 +211,37 @@ extension Collection {
 let arr = ["a", "b"]
 let empty = [String]()
 print("arr is not empty: \(arr.isNotEmpty). empty is not empty: \(empty.isNotEmpty).")
+
+// handling nil
+print("---handling nil---")
+let dic = ["a": "b", "c": "d"]
+// way 1
+if let entry = dic["a"] {
+    print("a is \(entry)")
+}
+
+func nilExample() {
+    // way 2
+    guard let anotherEntry = dic["e"] else {
+        print("e is nil")
+        return
+    }
+    print("e is \(anotherEntry)")
+}
+nilExample()
+// way 3
+print("f is \(dic["f"] ?? "none")")
+// way 4
+print("g's uppercase is \(dic["g"]?.uppercased() ?? "none")")
+// way 5
+enum UserError: Error {
+    case networkError
+}
+func getUser(_ number: Int) throws -> String {
+    throw UserError.networkError
+}
+if let user = try? getUser(7) {
+    print("user is \(user)")
+} else {
+    print("user is nil")
+}
